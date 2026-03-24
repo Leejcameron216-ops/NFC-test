@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NFC Music Test</title>
+</head>
+<body>
+  <h1>🎵 NFC Music Test</h1>
+  <p>Tap "Start Test" to play the sequence of songs.</p>
+
+  <!-- YouTube player iframe -->
+  <iframe id="video" width="560" height="315"
+    src="https://www.youtube.com/embed/x2x1tkpWi52a84Fi"
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen></iframe>
+
+  <!-- Start button -->
+  <button id="startBtn">Start Test</button>
+
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const video = document.getElementById('video');
+
+    startBtn.addEventListener('click', () => {
+      // Step 1: Play first video automatically
+      video.src = "https://www.youtube.com/embed/x2x1tkpWi52a84Fi?autoplay=1";
+
+      // Step 2: After 1 minute, switch to second video
+      setTimeout(() => {
+        video.src = "https://www.youtube.com/embed/4hmaU7lZbaLyCiNl?autoplay=1";
+      }, 60000); // 60,000 ms = 1 minute
+    });
+  </script>
+</body>
+</html>
