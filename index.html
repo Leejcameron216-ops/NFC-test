@@ -1,40 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>NFC Music Test</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exclusive Music Experience</title>
 </head>
-<body>
-  <h1>🎵 NFC Music Test</h1>
-  <p>Tap "Start Test" to play the sequence of songs.</p>
+<body style="text-align:center; font-family:sans-serif; padding-top:50px;">
 
-  <!-- YouTube player iframe -->
+  <!-- Optional premium-feel header -->
+  <h2>You found this for a reason 🎵 Tap anywhere to play!</h2>
+
+  <!-- Video iframe -->
   <iframe id="video" width="560" height="315"
     src="https://www.youtube.com/embed/GzP7Q8mr7Yg"
     frameborder="0"
     allow="autoplay; encrypted-media"
-    allowfullscreen></iframe>
+    allowfullscreen>
+  </iframe>
 
-  <!-- Start button -->
-  <button id="startBtn">Start Test</button>
-
+  <!-- Script to handle 3-video timed sequence -->
   <script>
-  const startBtn = document.getElementById('startBtn');
-  const video = document.getElementById('video');
+    const video = document.getElementById('video');
 
-  startBtn.addEventListener('click', () => {
-    // Play the already loaded video (DON'T reset src)
-    video.src += "&autoplay=1";
+    document.body.addEventListener('click', () => {
+      // Start Video 1 (dummy)
+      video.src = "https://www.youtube.com/embed/GzP7Q8mr7Yg?autoplay=1";
 
-    // After 1 minute, switch to second video
-    setTimeout(() => {
-      video.src = "";
-
+      // After 1 minute → Video 2
       setTimeout(() => {
-        video.src = "https://www.youtube.com/embed/SECOND_VIDEO_ID?autoplay=1";
-      }, 500);
+        video.src = "";
 
-    }, 60000);
-  });
-</script>
+        setTimeout(() => {
+          video.src = "https://www.youtube.com/embed/GzP7Q8mr7Yg?autoplay=1";
+        }, 500);
+
+      }, 60000);
+
+      // After 2 minutes → Video 3
+      setTimeout(() => {
+        video.src = "";
+
+        setTimeout(() => {
+          video.src = "https://www.youtube.com/embed/EY8S83Ug7sI?autoplay=1";
+        }, 500);
+
+      }, 120000);
+
+    }, { once: true });
+  </script>
+
 </body>
 </html>
