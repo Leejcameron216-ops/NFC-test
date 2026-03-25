@@ -40,24 +40,22 @@
     if (player && player.playVideo) {
       document.getElementById('instruction').innerText = "Playing...";
 
-      // Start first video (dummy)
+      // Start first video
       player.loadVideoById(videos[0]);
       player.playVideo();
 
-      // Schedule next videos
+      // After 25 seconds → Video 2
       setTimeout(() => {
-        currentIndex = 1;
-        player.loadVideoById(videos[currentIndex]);
+        player.loadVideoById(videos[1]);
         player.playVideo();
-      }, 60000); // 1 minute
+      }, 25000);
 
+      // After 50 seconds → Video 3
       setTimeout(() => {
-        currentIndex = 2;
-        player.loadVideoById(videos[currentIndex]);
+        player.loadVideoById(videos[2]);
         player.playVideo();
-      }, 120000); // 2 minutes total
+      }, 50000);
     }
   }, { once: true });
 </script>
-</body>
-</html>
+🎯 Final behavior
