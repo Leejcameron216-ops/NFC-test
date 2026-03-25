@@ -18,18 +18,23 @@
   <button id="startBtn">Start Test</button>
 
   <script>
-    const startBtn = document.getElementById('startBtn');
-    const video = document.getElementById('video');
+  const startBtn = document.getElementById('startBtn');
+  const video = document.getElementById('video');
 
-    startBtn.addEventListener('click', () => {
-      // Step 1: Play first video automatically
-      video.src = "https://www.youtube.com/GzP7Q8mr7Yg?autoplay=1";
+  startBtn.addEventListener('click', () => {
+    // Play the already loaded video (DON'T reset src)
+    video.src += "&autoplay=1";
 
-      // Step 2: After 1 minute, switch to second video
+    // After 1 minute, switch to second video
+    setTimeout(() => {
+      video.src = "";
+
       setTimeout(() => {
-        video.src = "https://www.youtube.com/embed/EY8S83Ug7sI?autoplay=1";
-      }, 60000); // 60,000 ms = 1 minute
-    });
-  </script>
+        video.src = "https://www.youtube.com/embed/SECOND_VIDEO_ID?autoplay=1";
+      }, 500);
+
+    }, 60000);
+  });
+</script>
 </body>
 </html>
