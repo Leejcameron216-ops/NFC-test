@@ -6,61 +6,58 @@
   <title>Exclusive Music Experience</title>
   <style>
     body { background: #000; color: #fff; text-align: center; font-family: sans-serif; padding-top: 50px; }
-    #player { margin-top: 20px; border: 2px solid #333; }
+    #player { margin: 20px auto; border: 2px solid #333; display: block; width: 560px; height: 315px; background: #222; }
     .status { font-style: italic; color: #888; }
   </style>
 </head>
 <body>
 
-  <h2>You found this for a reason 🎵</h2>
-  <p id="instruction" class="status">Tap anywhere to begin the journey...</p>
+<h2>You found this for a reason 🎵 Tap anywhere to start</h2>
+<p id="instruction" class="status">Tap anywhere to begin the journey...</p>
+<div id="player"></div>
 
-  <div id="player"></div>
+<script src="https://www.youtube.com/iframe_api"></script>
 
-  <script>
-    // 1. Load the YouTube API properly
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com";
-    var firstScriptTag = document.getElementsByTagName('script')[0]; // Fixed this line
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+<script>
+  let player;
+  const videos = [
+    'GzP7Q8mr7Yg', // dummy first video
+    'SECOND_VIDEO_ID', // first real song
+    'THIRD_VIDEO_ID'   // second real song
+  ];
+  let currentIndex = 0;
 
-    let player;
-    const videoSequence = [
-      'GzP7Q8mr7Yg', // Video 1
-      'GzP7Q8mr7Yg', // Video 2 (Triggered after 5 seconds)
-      'EY8S83Ug7sI'  // Video 3 (Triggered after 120 seconds)
-    ];
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '315',
+      width: '560',
+      videoId: videos[0],
+      playerVars: { 'autoplay': 0, 'controls': 0, 'rel': 0 }
+    });
+  }
 
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('player', {
-        height: '315',
-        width: '560',
-        videoId: videoSequence[0], // Start with the first video ID
-        playerVars: { 'autoplay': 0, 'controls': 1, 'rel': 0 },
-        events: { 'onReady': onPlayerReady }
-      });
-    }
+  document.body.addEventListener('click', () => {
+    if (player && player.playVideo) {
+      document.getElementById('instruction').innerText = "Playing...";
 
-    function onPlayerReady(event) {
-      document.body.addEventListener('click', () => {
-        document.getElementById('instruction').innerText = "Playing...";
+      // Start first video (dummy)
+      player.loadVideoById(videos[0]);
+      player.playVideo();
+
+      // Schedule next videos
+      setTimeout(() => {
+        currentIndex = 1;
+        player.loadVideoById(videos[currentIndex]);
         player.playVideo();
+      }, 60000); // 1 minute
 
-        // Transition 1: After 5 seconds -> Switch to Video 2
-        setTimeout(() => {
-          player.loadVideoById(videoSequence[1]);
-          console.log("Switching to Video 2");
-
-          // Transition 2: After 120 more seconds -> Switch to Video 3
-          setTimeout(() => {
-            player.loadVideoById(videoSequence[2]);
-            console.log("Switching to Video 3");
-          }, 120000);
-
-        }, 5000); 
-
-      }, { once: true });
+      setTimeout(() => {
+        currentIndex = 2;
+        player.loadVideoById(videos[currentIndex]);
+        player.playVideo();
+      }, 120000); // 2 minutes total
     }
-  </script>
+  }, { once: true });
+</script>
 </body>
 </html>
