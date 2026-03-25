@@ -4,50 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Exclusive Music Experience</title>
+  <style>
+    body { background: #000; color: #fff; text-align: center; font-family: sans-serif; padding-top: 50px; }
+    #player { margin-top: 20px; border: 2px solid #333; }
+    .status { font-style: italic; color: #888; }
+  </style>
 </head>
-<body style="text-align:center; font-family:sans-serif; padding-top:50px;">
+<body>
 
-  <!-- Optional premium-feel header -->
-  <h2>You found this for a reason 🎵 Tap anywhere to play!</h2>
+  <h2>You found this for a reason 🎵</h2>
+  <p class="status">Tap anywhere to begin the journey...</p>
 
-  <!-- Video iframe -->
-  <iframe id="video" width="560" height="315"
-    src="https://www.youtube.com/embed/GzP7Q8mr7Yg"
-    frameborder="0"
-    allow="autoplay; encrypted-media"
-    allowfullscreen>
-  </iframe>
+  <!-- The API will replace this div with the actual video -->
+  <div id="player"></div>
 
-  <!-- Script to handle 3-video timed sequence -->
   <script>
-    const video = document.getElementById('video');
+    // 1. Load the YouTube IFrame API
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    document.body.addEventListener('click', () => {
-      // Start Video 1 (dummy)
-      video.src = "https://www.youtube.com/embed/GzP7Q8mr7Yg?autoplay=1";
+    let player;
+    const videoSequence = [
+      'GzP7Q8mr7Yg', // Video 1
+      'GzP7Q8mr7Yg', // Video 2 (Same ID, as per your request)
+      'EY8S83Ug7sI'  // Video 3
+    ];
 
-      // After 1 minute → Video 2
-      setTimeout(() => {
-        video.src = "";
+    // 2. Initialize the player (hidden at first)
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '315',
+        width: '560',
+        videoId: videoSequence[0],
+        playerVars: { 'autoplay': 0, 'controls': 1, 'rel': 0 },
+        events: { 'onReady': onPlayerReady }
+      });
+    }
 
+    function onPlayerReady(event) {
+      // 3. Wait for user click to start the sequence
+      document.body.addEventListener('click', () => {
+        document.querySelector('.status').innerText = "Playing...";
+        player.playVideo();
+
+        // After 5 seconds -> Switch to Video 2
         setTimeout(() => {
-          video.src = "https://www.youtube.com/embed/GzP7Q8mr7Yg?autoplay=1";
-        }, 500);
+          player.loadVideoById(videoSequence[1]);
+          
+          // After 2 more minutes (120s) -> Switch to Video 3
+          setTimeout(() => {
+            player.loadVideoById(videoSequence[2]);
+          }, 120000);
 
-      }, 60000);
+        }, 5000); 
 
-      // After 2 minutes → Video 3
-      setTimeout(() => {
-        video.src = "";
-
-        setTimeout(() => {
-          video.src = "https://www.youtube.com/embed/EY8S83Ug7sI?autoplay=1";
-        }, 500);
-
-      }, 120000);
-
-    }, { once: true });
+      }, { once: true });
+    }
   </script>
-
 </body>
 </html>
